@@ -1,0 +1,41 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.13
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        args: [--config-file, mypy.ini]
+
+  - repo: local
+    hooks:
+      - id: check-agents
+        name: check generated AGENTS.md files
+        entry: uv run scripts/sync_agents.py
+        language: system
+        pass_filenames: false
+
+      - id: pyright
+        name: pyright
+        entry: uv run pyright
+        language: system
+        pass_filenames: false
+
+      - id: pytest
+        name: pytest (without e2e)
+        entry: sh -c 'PYTHONPATH=src uv run pytest -q -m "not e2e"'
+        language: system
+        pass_filenames: false
+        stages: [manual]
+
+      - id: pytest-e2e
+        name: pytest (e2e)
+        entry: sh -c 'PYTHONPATH=src uv run pytest -q -m e2e --override-ini "addopts="'
+        language: system
+        pass_filenames: false
+        stages: [manual]

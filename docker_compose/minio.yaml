@@ -1,0 +1,27 @@
+name: agic
+
+services:
+  agic-minio:
+    image: quay.io/minio/minio:latest
+    container_name: agic-minio
+    env_file:
+      - ../.dev.env
+    command: server /data --console-address ":${MINIO__CONSOLE_PORT}"
+    environment:
+      MINIO_ROOT_USER: ${MINIO__ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO__ROOT_PASSWORD}
+    ports:
+      - "${MINIO__API_PORT}:9000"
+      - "${MINIO__CONSOLE_PORT}:9001"
+    volumes:
+      - agic_minio_data:/data
+    networks:
+      - backend
+
+volumes:
+  agic_minio_data:
+    name: docker_compose_agic_minio
+
+networks:
+  backend:
+    driver: bridge

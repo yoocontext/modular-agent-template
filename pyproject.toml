@@ -3,4 +3,63 @@ name = "nohook"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+  "aiobotocore>=2.25.2",
+  "asyncpg>=0.30.0",
+  "dishka>=1.7.2",
+  "faststream[rabbit]>=0.6.3",
+  "greenlet>=3.2.2",
+  "pydantic-settings>=2.14.1",
+  "redis>=7.1.0",
+  "sqlalchemy>=2.0.41",
+]
+
+[dependency-groups]
+dev = [
+  "mypy>=1.15.0",
+  "pre-commit>=4.2.0",
+  "pyright>=1.1.406",
+  "pytest>=8.4.1",
+  "pytest-cov>=7.0.0",
+  "ruff>=0.11.13",
+]
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "C90", "N"]
+ignore = ["E203", "E266"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = ["*/tests/*", "*/migrations/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+[[tool.nohook.agents]]
+template = "agents/application.md"
+target = "src/modules/{module_name}/application"
+
+[[tool.nohook.agents]]
+template = "agents/use_cases.md"
+target = "src/modules/{module_name}/application/use_cases"
+
+[[tool.nohook.agents]]
+template = "agents/delivery.md"
+target = "src/modules/{module_name}/delivery"
+
+[[tool.nohook.agents]]
+template = "agents/dm.md"
+target = "src/modules/{module_name}/infra/dm"
+
+[[tool.nohook.agents]]
+template = "agents/orm.md"
+target = "src/modules/{module_name}/infra/orm"

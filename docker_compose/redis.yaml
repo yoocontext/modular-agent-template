@@ -1,0 +1,26 @@
+name: agic
+
+services:
+  agic-redis:
+    image: redis:7.2
+    container_name: agic-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS__PORT}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS__PASSWORD}
+    command: >
+      redis-server --appendonly yes --appendfsync everysec --maxmemory 512mb
+      --maxmemory-policy allkeys-lru --requirepass ${REDIS__PASSWORD}
+    volumes:
+      - agic_redis_data:/data
+    networks:
+      - backend
+
+volumes:
+  agic_redis_data:
+    name: docker_compose_agic_redis_data
+
+networks:
+  backend:
+    driver: bridge

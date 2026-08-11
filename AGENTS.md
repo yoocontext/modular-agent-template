@@ -34,6 +34,28 @@ Complete the following steps:
 ## Modules
 - `src/modules/{module_name}` is a vertical area, not a layer.
 
+### Adding a module
+
+When adding `src/modules/{module_name}`, create the configured layer
+directories before adding implementation code:
+
+```text
+src/modules/{module_name}/application/use_cases/
+src/modules/{module_name}/delivery/
+src/modules/{module_name}/infra/dm/
+src/modules/{module_name}/infra/orm/
+```
+
+Then generate and verify the module-specific instructions:
+
+```bash
+uv run scripts/sync_agents.py --write
+uv run scripts/sync_agents.py
+```
+
+Commit every generated `AGENTS.md` file with the new module. The generator only
+writes guides for configured target directories that already exist.
+
 ### Module import rule
 - Forbidden: `modules.{module_a}.*` imports from `modules.{module_b}.*`.
 - Module communication only through HTTP or event bus contracts.

@@ -1,20 +1,20 @@
-name: agic
+name: project-name
 
 services:
-  agic:
-    container_name: agic
+  project-name:
+    container_name: project-name
     build:
       context: ..
       dockerfile: Dockerfile
-    image: agic
+    image: project-name
     env_file:
       - ../.dev.env
     environment:
-      PG__HOST: agic-pg
+      PG__HOST: project-name-pg
       PG__PORT: "5432"
-      REDIS__HOST: agic-redis
+      REDIS__HOST: project-name-redis
       REDIS__PORT: "6379"
-      S3__ENDPOINT_URL: http://agic-minio:9000
+      S3__ENDPOINT_URL: http://project-name-minio:9000
     ports:
       - "${APP_PORT}:8003"
     command: "./.venv/bin/uvicorn bootstrap.main:create_app --host 0.0.0.0 --port 8003 --factory"

@@ -1,9 +1,9 @@
-name: agic
+name: project-name
 
 services:
-  agic-minio:
+  project-name-minio:
     image: quay.io/minio/minio:latest
-    container_name: agic-minio
+    container_name: project-name-minio
     env_file:
       - ../.dev.env
     command: server /data --console-address ":${MINIO__CONSOLE_PORT}"
@@ -14,13 +14,13 @@ services:
       - "${MINIO__API_PORT}:9000"
       - "${MINIO__CONSOLE_PORT}:9001"
     volumes:
-      - agic_minio_data:/data
+      - project_name_minio_data:/data
     networks:
       - backend
 
 volumes:
-  agic_minio_data:
-    name: docker_compose_agic_minio
+  project_name_minio_data:
+    name: docker_compose_project_name_minio
 
 networks:
   backend:

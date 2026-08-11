@@ -38,7 +38,7 @@ class PlannedFile:
 def load_rules() -> list[AgentRule]:
     pyproject = ROOT / "pyproject.toml"
     config = tomllib.loads(pyproject.read_text())
-    raw_rules = config.get("tool", {}).get("nohook", {}).get("agents", [])
+    raw_rules = config.get("tool", {}).get("project_name", {}).get("agents", [])
 
     rules: list[AgentRule] = []
     for raw_rule in raw_rules:

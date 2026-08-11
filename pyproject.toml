@@ -1,5 +1,5 @@
 [project]
-name = "nohook"
+name = "project-name"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
@@ -44,22 +44,22 @@ omit = ["*/tests/*", "*/migrations/*"]
 show_missing = true
 skip_covered = false
 
-[[tool.nohook.agents]]
+[[tool.project_name.agents]]
 template = "agents/application.md"
 target = "src/modules/{module_name}/application"
 
-[[tool.nohook.agents]]
+[[tool.project_name.agents]]
 template = "agents/use_cases.md"
 target = "src/modules/{module_name}/application/use_cases"
 
-[[tool.nohook.agents]]
+[[tool.project_name.agents]]
 template = "agents/delivery.md"
 target = "src/modules/{module_name}/delivery"
 
-[[tool.nohook.agents]]
+[[tool.project_name.agents]]
 template = "agents/dm.md"
 target = "src/modules/{module_name}/infra/dm"
 
-[[tool.nohook.agents]]
+[[tool.project_name.agents]]
 template = "agents/orm.md"
 target = "src/modules/{module_name}/infra/orm"

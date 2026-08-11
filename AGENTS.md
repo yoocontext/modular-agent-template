@@ -2,11 +2,16 @@
 
 If you are reading this, the AI has been initialized in the project for the first time.
 
+Before executing any changes, the agent must tell the user what it plans to do
+and receive the user's explicit permission. Do not modify files, run commands
+that change project state, or perform other implementation actions before that
+permission is received.
+
 Complete the following steps:
 
 1. Add `ruff`, `pyright`, and `mypy` to the `pre-commit` hook.
-2.1212 In `docker_compose/`, rename containers, aliases, volumes, and related items to match the project name.
-3. After completing these steps, delete these instructions and this file.
+2. In `docker_compose/`, rename containers, aliases, volumes, and related items to match the project name.
+3. Keep this `AGENTS.md` file after completing these steps. Do not delete or remove these instructions.
 
 
 # Project architecture

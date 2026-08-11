@@ -10,9 +10,9 @@ class PgSettings(BaseSettings):
 
     host: str = "localhost"
     port: int = 5432
-    db: str = "nohook"
-    user: str = "nohook"
-    password: str = "nohook"
+    db: str = "project_name"
+    user: str = "project_name"
+    password: str = "project_name"
 
     @property
     def sqlalchemy_url(self) -> str:

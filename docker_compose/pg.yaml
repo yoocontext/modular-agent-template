@@ -1,9 +1,9 @@
-name: agic
+name: project-name
 
 services:
-  agic-pg:
+  project-name-pg:
     image: pgvector/pgvector:pg17
-    container_name: agic-pg
+    container_name: project-name-pg
     env_file:
       - ../.dev.env
     environment:
@@ -13,30 +13,30 @@ services:
     ports:
       - "${PG__PORT}:5432"
     volumes:
-      - agic_pg:/var/lib/postgresql/data
+      - project_name_pg:/var/lib/postgresql/data
     networks:
       - backend
 
-  agic-pgadmin:
+  project-name-pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: agic-pgadmin
+    container_name: project-name-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
       - "${PGADMIN_PORT}:80"
     depends_on:
-      - agic-pg
+      - project-name-pg
     volumes:
-      - agic_pgadmin:/var/lib/pgadmin
+      - project_name_pgadmin:/var/lib/pgadmin
     networks:
       - backend
 
 volumes:
-  agic_pg:
-    name: docker_compose_agic_pg
-  agic_pgadmin:
-    name: docker_compose_agic_pgadmin
+  project_name_pg:
+    name: docker_compose_project_name_pg
+  project_name_pgadmin:
+    name: docker_compose_project_name_pgadmin
 
 networks:
   backend:

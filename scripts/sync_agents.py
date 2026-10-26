@@ -47,7 +47,7 @@ def load_rules() -> list[AgentRule]:
                 template=ROOT / raw_rule["template"],
                 target=raw_rule["target"],
                 create=raw_rule.get("create", False),
-            )
+            ),
         )
     return rules
 
@@ -95,7 +95,7 @@ def plan_files(rules: list[AgentRule]) -> list[PlannedFile]:
                     PlannedFile(
                         target=target,
                         content=render_template(rule.template, variables),
-                    )
+                    ),
                 )
             continue
 
@@ -105,8 +105,9 @@ def plan_files(rules: list[AgentRule]) -> list[PlannedFile]:
 
         planned.append(
             PlannedFile(
-                target=target, content=render_template(rule.template, {})
-            )
+                target=target,
+                content=render_template(rule.template, {}),
+            ),
         )
 
     return planned

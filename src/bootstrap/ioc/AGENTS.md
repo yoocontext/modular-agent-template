@@ -1,42 +1,52 @@
 # IoC guide
 
-
 ## Structure
 
 ```text
 src/bootstrap/ioc/
-  container.py
-  providers/{module_name}/{layer}/...
+  container.py                            create_container() lists every provider
+  providers/modules/{module_name}/{layer}/...
+  providers/seedwork/{layer}/...
+  providers/bootstrap/...
 ```
 
-- `{module_name}` — module name from `src/modules/`.
-- `{module_name}` can be omitted if there is no `src/modules/` directory.
-
-
-## Provider location rule
-
-`src/bootstrap/ioc/providers/` mirrors `src/` by ownership and layer.
-Provider files may group lifecycle wiring for a subsystem or entity instead of
-matching every source file one-to-one.
-
-Source file:
+`providers/` mirrors `src/` by ownership and layer. A provider file groups
+wiring for one kind of component or one feature:
 
 ```text
-src/modules/{module_name}/infra/dm/user.py
+src/modules/billing/infra/dm/...          → providers/modules/billing/infra/dm.py
+src/modules/billing/infra/queries/...     → providers/modules/billing/infra/queries.py
+src/modules/billing/application/use_cases → providers/modules/billing/application/use_cases.py
 ```
 
-Provider file:
+Split a provider file by feature when it grows:
+`providers/modules/billing/infra/dm/payments.py`.
 
-```text
-src/bootstrap/ioc/providers/{module_name}/infra/dm.py
+## Providers
+
+```python
+class BillingDmProvider(Provider):
+    payment_dm = provide(
+        AlchemyPaymentDm,
+        provides=IPaymentDm,
+        scope=Scope.REQUEST,
+    )
+
+
+class BillingUseCasesProvider(Provider):
+    pay_order = provide(
+        PayOrderUc,
+        scope=Scope.REQUEST,
+    )
 ```
 
-## Provider responsibility
+- Provide the interface, not the implementation: `provides=IPaymentDm`.
+- Use `Scope.APP` for settings, engine, session factory, and clients.
+- Use `Scope.REQUEST` for the session and everything that depends on it:
+  transaction manager, dm, queries, services, use cases.
+- A provider that opens a resource yields it and closes it after `yield`.
+- Add every new provider to `create_container()`.
+- Do not add constructor arguments to providers for tests; tests replace
+  providers in `tests/ioc/`.
 
-A provider manages the object lifecycle.
-
-Example:
-
-```text
-../providers/seedwork/infra/alchemy.py
-```
+Handlers receive use cases through `FromDishka[PayOrderUc]` with `@inject`.

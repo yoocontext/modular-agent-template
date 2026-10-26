@@ -1,33 +1,46 @@
-# DataMapper (dm)
+# Data mappers (dm)
 
 ## Purpose
 
-`dm` is an abstraction for interacting with the database
+A `dm` loads and persists one entity or aggregate and maps it to and from ORM
+models.
+
+Feature-specific reads and multi-row writes do not belong here; put them in
+`../queries/`.
+
+## Methods
+
+A dm may expose only these methods. Implement only the ones you need.
+
+- `get(*, id)` — entity or `None`.
+- `get_for_update(*, id)` — entity or `None`; the row stays locked until the
+  transaction ends.
+- `add(*, entity)` — stage a new entity.
+- `save(*, entity)` — persist changes to an existing entity.
+- `delete(*, entity)` — stage deletion.
+
+Any other method is a query. Add it to `../queries/` instead.
 
 ## Restrictions
 
-- `commit` is forbidden in `dm`
+- Accept and return application entities, never ORM models.
+- Do not call `commit()` or `rollback()`. See "Transaction boundaries" in the
+  root `AGENTS.md`.
+- Do not make business decisions: no policies, clocks, or settings.
+- Import another module only through its `application.api`, and only to
+  implement a port that module declares (adapter / ACL).
 
 ## Mapping
 
-- `dm` must not contain mapping details; move them to:
+- Keep ORM ↔ entity mapping in `mappers/`, not in dm classes.
+- `../queries/` reuses these mappers when returning entities.
 
-  ```text
-  ../infra/dm/mappers/
-  ```
+## File structure
 
-## File Structure
+One entity → one interface, one dm, one mapper.
 
-- in `../dm/` and `../infra/dm/mappers/`, split files and folders by logical modules:
-
-  ```text
-  ../dm/payments/tax.py
-  ../infra/dm/mappers/payments/tax.py
-  ```
-
-- and also by entity:
-
-  ```text
-  ../dm/payments/user/tax.py
-  ../infra/dm/mappers/payments/user/tax.py
-  ```
+```text
+application/interfaces/dm/payments/payment.py   IPaymentDm
+infra/dm/payments/payment.py                    AlchemyPaymentDm
+infra/dm/mappers/payments/payment.py
+```

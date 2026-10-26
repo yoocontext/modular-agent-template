@@ -12,6 +12,7 @@ dependencies = [
   "pydantic-settings>=2.14.1",
   "redis>=7.1.0",
   "sqlalchemy>=2.0.41",
+  "uuid-utils>=0.12,<1",
 ]
 
 [dependency-groups]
@@ -49,8 +50,16 @@ template = "agents/application.md"
 target = "src/modules/{module_name}/application"
 
 [[tool.project_name.agents]]
+template = "agents/entities.md"
+target = "src/modules/{module_name}/application/entities"
+
+[[tool.project_name.agents]]
 template = "agents/use_cases.md"
 target = "src/modules/{module_name}/application/use_cases"
+
+[[tool.project_name.agents]]
+template = "agents/services.md"
+target = "src/modules/{module_name}/application/services"
 
 [[tool.project_name.agents]]
 template = "agents/delivery.md"
@@ -59,6 +68,11 @@ target = "src/modules/{module_name}/delivery"
 [[tool.project_name.agents]]
 template = "agents/dm.md"
 target = "src/modules/{module_name}/infra/dm"
+
+[[tool.project_name.agents]]
+template = "agents/queries.md"
+target = "src/modules/{module_name}/infra/queries"
+create = true
 
 [[tool.project_name.agents]]
 template = "agents/orm.md"
